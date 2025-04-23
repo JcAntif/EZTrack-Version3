@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Item | EZTrack</title>
+  <link rel="stylesheet" href="additemstyle.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">EZTrack Inventory</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="inventory.html">Inventory</a></li>
+      <li><a href="add-item.html" class="active">Add Item</a></li>
+      <li><a href="reports.html">Reports</a></li>
+    </ul>
+    <div class="admin-dropdown">Admin ▼</div>
+  </nav>
+
+  <!-- Main Dashboard Layout -->
+  <div class="dashboard-container">
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <!-- Stat Cards Panel -->
+      <div class="stats-panel">
+        <!-- Total Item (full width) -->
+        <div class="stat-card stat-wide" id="totalItems">
+          <i class="fas fa-box"></i>
+          <span class="stat-text">Total Items: 13</span>
+        </div>
+      
+        <!-- Remaining 4 Cards (will auto-wrap into 2 rows of 2) -->
+        <div class="stat-card" id="qcPassed">
+          <i class="fas fa-check-circle" style="color: #4ade80;"></i>
+          <span class="stat-text">QC Passed: 5</span>
+        </div>
+      
+        <div class="stat-card" id="underQC">
+          <i class="fas fa-search" style="color: #facc15;"></i>
+          <span class="stat-text">Under QC: 2</span>
+        </div>
+      
+        <div class="stat-card" id="qcFailed">
+          <i class="fas fa-times-circle" style="color: #f87171;"></i>
+          <span class="stat-text">QC Failed: 2</span>
+        </div>
+      
+        <div class="stat-card" id="readyDelivery">
+          <i class="fas fa-truck" style="color: #60a5fa;"></i>
+          <span class="stat-text">Ready for Delivery: 4</span>
+        </div>
+      </div>
+      
+
+      <!-- Chart Section -->
+      <div class="chart-container">
+        <h3>Quality Control Breakdown<p>&nbsp;</p></h3>
+        <canvas id="statusChart"></canvas>
+        <div id="customLegend" class="custom-legend"></div>
+      </div>
+
+      <!-- Recently Added Items -->
+      <div class="recent-items-panel">
+        <h3>Recently Added Items</h3>
+        <div class="search-filter-controls">
+          <input type="text" id="searchInput" placeholder="Search by model, serial, etc.">
+          <select id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="QC Passed">QC Passed</option>
+            <option value="QC Failed">QC Failed</option>
+            <option value="Under QC">Under QC</option>
+            <option value="Ready for Delivery">Ready for Delivery</option>
+          </select>
+        </div>
+        <div class="table-container">
+          <table id="recentItemsTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Serial Numbers</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows added dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: Add/Edit Form -->
+    <div class="add-edit-panel">
+      <h3>ADD Items</h3>
+      <form id="itemForm">
+        <label>Date of Entry</label>
+        <input type="date" id="entryDate" required />
+
+        <label>Item Description</label>
+        <input type="text" id="itemModel" placeholder="Item Description / Model" required />
+
+        <label>Quantity</label>
+        <input type="number" id="quantity" placeholder="Quantity" required min="1" />
+
+        <label>Serial Number(s)</label>
+        <div id="serialNumbersContainer"></div>
+
+        <label>Checked by</label>
+        <input type="text" id="checkedBy" placeholder="Checked By" required />
+
+        <label>Received by</label>
+        <input type="text" id="receivedBy" placeholder="Received By" required />
+
+        <label>Distributor / Supplier</label>
+        <input type="text" id="distributorSupplier" placeholder="Distributor / Supplier" />
+
+        <label>Remarks</label>
+        <input type="text" id="remarks" placeholder="remarks" />
+
+        <label>End User</label>
+        <input type="text" id="endUser" placeholder="End User" />
+
+        <label>Purchase Order No. / Work Order No.</label>
+        <input type="text" id="poNumber" placeholder="Purchase Order Number" />
+
+        <label>Date Delivered</label>
+        <input type="date" id="dateDelivered" />
+
+        <label>Delivered by</label>
+        <select id="deliveredBy">
+          <option value="Errol">Errol</option>
+          <option value="Oliver">Oliver</option>
+          <option value="Kim">Kim</option>
+          <option value="Chard">Chard</option>
+          <option value="Russell">Russell</option>
+          <option value="Kairi">Kairi</option>
+          <option value="JC">JC</option>
+        </select>
+
+        <label>Notes</label>
+        <input type="text" id="notes" placeholder="notes" />
+
+        <label>Unit Price</label>
+        <input type="text" id="unitPrice" placeholder="Unit Price" />
+
+        <label>Product Status</label>
+        <select id="status" required>
+          <option value="">-- Select Status --</option>
+          <option value="QC Passed">QC Passed</option>
+          <option value="QC Failed">QC Failed</option>
+          <option value="Under QC">Under QC</option>
+          <option value="Ready for Delivery">Ready for Delivery</option>
+        </select>
+
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/add-item.js"></script>
+</body>
+</html>
